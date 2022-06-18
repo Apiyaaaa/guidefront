@@ -1,38 +1,57 @@
 .App {
+  height: 100vh;
+  width: 100vw;
+  position: absolute;
+}
+
+.left-nav-notActive {
+  margin-top: 2%;
+  position: fixed;
+  width: 150px;
+  height: 50px;
+  background-color: whitesmoke;
+}
+.left-nav-active {
+  margin-top: 2%;
+  position: fixed;
+  width: 15%;
+  height: 70%;
+  background-color: whitesmoke;
+}
+
+.nav-title {
+  padding-top: 10px;
+  margin-left: 10%;
+  font-size: 26px;
+  display: flex;
   text-align: center;
 }
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
+.nav-title-title {
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.nav-title-icon {
+  flex-direction: column;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+@font-face {
+  font-family: "iconfont"; /* Project id 3456289 */
+  src: url("//at.alicdn.com/t/font_3456289_ak2s8iwt3fl.woff2?t=1654864184729")
+      format("woff2"),
+    url("//at.alicdn.com/t/font_3456289_ak2s8iwt3fl.woff?t=1654864184729")
+      format("woff"),
+    url("//at.alicdn.com/t/font_3456289_ak2s8iwt3fl.ttf?t=1654864184729")
+      format("truetype");
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 26px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-caidan:before {
+  content: "\e7c6";
 }

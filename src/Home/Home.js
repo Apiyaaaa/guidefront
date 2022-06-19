@@ -1,8 +1,18 @@
 import "./Home.css";
+import { useNavigate } from "react-router-dom";
 function Home() {
   const hadelClick = (tags) => {
     console.log(tags);
   };
+  const navigate = useNavigate();
+  const handelKey = (e) => {
+    console.log(e)
+    if (e.keyCode === 13) {
+      window.open("/searchpage?word="+document.getElementById("search"))
+      console.log('yes')
+    }
+  };
+
   return (
     <div
       style={{
@@ -17,8 +27,10 @@ function Home() {
 
       <div className="search-input">
         <input
+          id="search"
           className="search-window"
           placeholder="还算好用的留学导航网站"
+          onKeyUp={(e) => handelKey(e)}
         ></input>
       </div>
 

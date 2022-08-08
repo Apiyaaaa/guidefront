@@ -1,0 +1,79 @@
+.article {
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+}
+.leftToc {
+  width: 210px;
+  margin-left: 45px;
+  margin-top: 30px;
+  margin-right: 47px;
+  
+}
+.cataTitle{
+  font-size: 36px;
+  font-weight: bold;
+  width: 210px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #E6E6E6;
+
+}
+.bigTitle {
+  font-size: 14px;
+  font-weight: bold;
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+.smallTitle {
+  font-size: 14px;
+  font-weight: normal;
+  margin-left: 10px;
+}
+.articleBody {
+  margin-top: 30px;
+  width: 600px;
+  background-color: #f3f3f3;
+  border-radius: 20px;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0px 3px 3px #e0e0e0;
+  display: flex;
+  justify-content: center;
+  padding: 40px 0px;
+}
+.articleContent {
+  width: 506px;
+}
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.detailBar {
+  display: flex;
+  flex-direction: row;
+}
+.updatedTime {
+  margin-left: auto;
+}
+.user {
+  font-size: 14px;
+}
+.views {
+  font-size: 14px;
+}
+.title {
+  margin: 20px 0px;
+  font-size: 20px;
+  font-weight: bold;
+}
+.tag {
+  font-size: 14px;
+  margin-right: 10px;
+}
+.updatedTime {
+  font-size: 14px;
+}
+.summary {
+  margin: 30px 0px;
+  font-size: 14px;
+}

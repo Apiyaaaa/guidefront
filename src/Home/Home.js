@@ -1,51 +1,57 @@
-import "./Home.css";
 import { useNavigate } from "react-router-dom";
+import styles from "./Home.module.css";
+import SearchIcon from "@mui/icons-material/Search";
+import Logo from "../planet.svg";
 function Home() {
   const hadelClick = (tags) => {
     console.log(tags);
   };
+
   const navigate = useNavigate();
   const handelKey = (e) => {
-    console.log(e)
+    console.log(e);
     if (e.keyCode === 13) {
-      window.open("/searchpage?word="+document.getElementById("search"))
-      console.log('yes')
+      const w = document.getElementById("search").value;
+      navigate("/search", { state: { word: w } });
+      console.log(w);
     }
   };
 
   return (
-    <div
-      style={{
-        height: "100vh",
-        width: "100vw",
-        backgroundColor: "#FFF8F5",
-        overflow: "hidden",
-      }}
-    >
-      <div style={{ height: "2vh" }}></div>
-      <div className="location">美国</div>
-
-      <div className="search-input">
-        <input
-          id="search"
-          className="search-window"
-          placeholder="还算好用的留学导航网站"
-          onKeyUp={(e) => handelKey(e)}
-        ></input>
+    <div className={styles.mainPage}>
+      <div className={styles.round}>
+        <div className={styles.topLeft}>
+          <div>#申请</div>
+          <img src={Logo} alt=""></img>
+        </div>
+        <div className={styles.topRight}>
+          <div>#本科</div>
+          <img src={Logo} alt=""></img>
+        </div>
+        <div className={styles.bottomLeft}>
+        <div>#毕业</div>
+          <img src={Logo} alt=""></img>
+        </div>
+        <div className={styles.bottomRight}>
+        <div>#研究生</div>
+          <img src={Logo} alt=""></img>
+        </div>
       </div>
-
-      <div className="main-cate">
-        <div className="cate one" onClick={() => hadelClick("prepare")}>
-          <a href="javascript:;#">留学准备</a>
+      <div className={styles.center}>
+        <div className={styles.header}>
+          <div className={styles.title}>留导航</div>
+          <div className={styles.country}>美国</div>
         </div>
-        <div className="cate two" onClick={() => hadelClick("prepare")}>
-          <a href="javascript:;">初入大学</a>
-        </div>
-        <div className="cate three" onClick={() => hadelClick("prepare")}>
-          <a href="javascript:;">大学生活</a>
-        </div>
-        <div className="cate four" onClick={() => hadelClick("prepare")}>
-          <a href="javascript:;">职业生涯</a>
+        <div className={styles.inputWindow}>
+          <input
+            id="search"
+            className={styles.search}
+            placeholder="还算好用的留学导航网站"
+            onKeyUp={(e) => handelKey(e)}
+          ></input>
+          <button className={styles.iconButton}>
+            <SearchIcon className={styles.searchIcon}></SearchIcon>
+          </button>
         </div>
       </div>
     </div>

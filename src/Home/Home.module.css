@@ -1,89 +1,344 @@
+/* ::-webkit-scrollbar {
+  display: none;
+} */
+
+/* 容器 */
 .mainPage {
+  display: flex;
   width: 100vw;
   height: 100vh;
-  display: flex;
+  min-height: 47vw;
   flex-direction: row;
   justify-content: center;
   background-color: #f9f9f9;
-  z-index: 2;
+  z-index: 0;
   position: relative;
+  margin: 0;
+  padding: 0;
   overflow: hidden;
+  animation: fade 1s ease-in;
 }
+
+
+
+/* Logo */
 .center {
-  margin-top: auto;
-  margin-bottom: auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  margin-top: 30vh;
+  margin-bottom: auto;
+  z-index: 1;
 }
 .header {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  font-size: 48px;
+  align-items: flex-start;
   font-weight: bold;
-  padding-bottom: 35px;
+  margin-bottom: 35px;
 }
-
+.title {
+  font-size: 2.5vw;
+}
 .country {
-  width: 40px;
-  height: 21px;
-  margin-left: 20px;
-  margin-top: 8px;
+  width: 2vw;
+  min-width: 30px;
+  margin-left: 1vw;
+  margin-top: 0.2vw;
+  padding: 0.1vw;
   background-color: #343434;
-  font-size: 14px;
+  font-size: 0.8vw;
   text-align: center;
   color: #ffffff;
 }
+
+/* 搜索框 */
+.inputWindow {
+  display: flex;
+  justify-content: center;
+  -webkit-animation: fade 1.5s linear;
+  animation: fade 1.5s linear;
+}
 .search {
-  width: 680px;
-  height: 37px;
-  border-radius: 20px;
+  width: 43vw;
+  padding: 0 0.4vw;
+  border-radius: 10vw;
   text-indent: 15px;
+  font-size: 0.8vw;
+  height: 3vh;
   background-color: #f9f9f9;
   box-shadow: 0px 3px 5px #c0c0c0;
+  transform: rotate(-0.8deg);
+  -webkit-animation: up-down-search 6s ease-in-out infinite;
+  animation: up-down-search 6s ease-in-out infinite;
+  transition: all 0.6s
+
 }
+.search:hover {
+  box-shadow: 0px 3px 5px #555555;
+
+}
+.search:focus {
+  border: 2px dashed #343434;
+  outline: none;
+  transform: rotate(0deg);
+  -webkit-animation: up-down 7s ease-in-out infinite;
+  animation: up-down 7s ease-in-out infinite;
+  transition: all 1s; 
+
+}
+
+.search:focus::placeholder {
+  color: transparent;
+  transition: all 0.8s;
+}
+
+/* 搜索按钮 */
 .iconButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 2vw;
+  height: 2vw;
   border-radius: 50%;
   background-color: #f9f9f9;
   margin-left: 10px;
-  vertical-align: middle;
   box-shadow: 0px 3px 5px #c0c0c0;
 }
 .searchIcon {
-  font-size: 30px;
+  font-size: 1.3vw;
+  vertical-align: middle;
 }
-.round {
-  overflow: hidden;
+.iconButton {
+  visibility: hidden;
+  opacity: 0;
+  transition: 0.3s;
 }
+input:focus + .iconButton {
+  visibility: visible;
+  opacity: 1;
+  transition: 0.6s;
+}
+
+
+/* 四角SVG图片布局 */
+/* 左上 */
 .topLeft {
-  width: 54vw;
-  height: 73.5vh;
   position: absolute;
-  left: -22.23%;
-  top: -22.38%;
+  top: -8vh;
+  left: 0;
+  pointer-events: none;
+  -webkit-animation: up-down 7s ease-in-out infinite;
+  animation: up-down 7s ease-in-out infinite;
 }
+.topLeft img {
+  width: 35vw;
+  z-index: 0;
+  transition: width 0.5s;
+  transition-timing-function: ease;
+}
+.topLeft:hover img {
+  width: 35.5vw;
+  transition: width 0.5s;
+  transition-timing-function: ease;
+}
+/* 点击区域 */
+.topLeft > .clickArea {
+  position: absolute;
+  top: -5vw;
+  left: -12vw;
+
+  width: 37vw;
+  height: 33vw;
+  border-radius: 50%;
+
+  z-index: 1;
+
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+/* 右上 */
 .topRight {
-  width: 54vw;
-  height: 73.5vh;
+  top: -3%;
+  right: 0;
   position: absolute;
-  right: -15.05%;
-  top: -33.86%;
+  -webkit-animation: up-down 8s ease-in-out infinite;
+  animation: up-down 8s ease-in-out infinite;
+  pointer-events: none;
 }
+.topRight img {
+  width: 38vw;
+  transition: width 0.5s;
+  transition-timing-function: ease;
+}
+.topRight:hover img {
+  width: 38.5vw;
+  transition: width 0.5s;
+  transition-timing-function: ease;
+}
+/* 点击区域 */
+.topRight > .clickArea {
+  position: absolute;
+  top: -10vw;
+  right: -5vw;
+
+  width: 41vw;
+  height: 34vw;
+  border-radius: 50%;
+
+  z-index: 1;
+
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+/* 左下 */
 .bottomLeft {
-  width: 61vw;
-  height: 82vh;
+  bottom: 0;
+  left: 0;
   position: absolute;
-  transform: rotate(-25.74deg);
-  left: -17.22%;
-  bottom: -40.71%;
-  
+  -webkit-animation: up-down 6s ease-in-out infinite;
+  animation: up-down 6s ease-in-out infinite;
+  pointer-events: none;
 }
-.bottomRight {
-  width: 54vw;
-  height: 73.5vh;
+.bottomLeft img {
+  width: 50vw;
+  bottom: 0;
+  vertical-align: middle;
+  transition: width 0.5s;
+  transition-timing-function: ease;
+}
+.bottomLeft:hover img {
+  width: 50.5vw;
+  transition: width 0.5s;
+  transition-timing-function: ease;
+}
+/* 点击区域 */
+.bottomLeft > .clickArea {
   position: absolute;
-  right: -13.51%;
-  bottom: -45.32%;
-  transform: rotate(25.98deg);
+  bottom: -16vw;
+  left: -5vw;
+
+  width: 41vw;
+  height: 34vw;
+  border-radius: 50%;
+
+  z-index: 1;
+
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+/* 右下 */
+.bottomRight {
+  bottom: 0;
+  right: 0;
+  position: absolute;
+  -webkit-animation: up-down 5s ease-in-out infinite;
+  animation: up-down 5s ease-in-out infinite;
+  pointer-events: none;
+}
+.bottomRight img {
+  width: 42vw;
+  height: 100%;
+  vertical-align: middle;
+  transition: width 0.5s;
+  transition-timing-function: ease;
+}
+.bottomRight:hover img {
+  width: 42.5vw;
+  transition: width 0.5s;
+  transition-timing-function: ease;
+}
+/* 点击区域 */
+.bottomRight > .clickArea {
+  position: absolute;
+  bottom: -18vw;
+  right: -12vw;
+
+  width: 43vw;
+  height: 33vw;
+  border-radius: 50%;
+
+  z-index: 1;
+
+  cursor: pointer;
+  pointer-events: auto;
+
+}
+
+
+/* 浮动呼吸效果 */
+@-webkit-keyframes up-down {
+  25% {
+    -webkit-transform: translateY(0.4vh);
+  }
+  50%,
+  100% {
+    -webkit-transform: translateY(0);
+  }
+  75% {
+    -webkit-transform: translateY(0.4vh);
+  }
+}
+
+@keyframes up-down {
+  25% {
+    transform: translateY(0.4vh);
+  }
+  50%,
+  100% {
+    transform: translateY(0);
+  }
+  75% {
+    transform: translateY(0.4vh);
+  }
+}
+
+@-webkit-keyframes up-down-search {
+  25% {
+    -webkit-transform: rotate(-0.8deg) translateY(0.3vh);
+    transition: transform 1s;
+  }
+  50%,
+  100% {
+    -webkit-transform: rotate(-0.8deg) translateY(0);
+  }
+  75% {
+    -webkit-transform: rotate(-0.8deg) translateY(0.3vh);
+  }
+}
+
+@keyframes up-down-search {
+  25% {
+    transform: rotate(-0.8deg) translateY(0.3vh);
+    transition: transform 1s;
+  }
+  50%,
+  100% {
+    transform: rotate(-0.8deg) translateY(0);
+  }
+  75% {
+    transform: rotate(-0.8deg) translateY(0.3vh);
+  }
+}
+
+/* 渐变效果 */
+@-webkit-keyframes fade {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes fade {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }

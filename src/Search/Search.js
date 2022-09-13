@@ -1,179 +1,159 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import styles from "./Search.module.css";
-import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
-import { useLocation, useNavigate } from "react-router-dom";
+import SearchPanel from '../components/SearchPanel/SearchPanel';
+import ArticleCard from "../components/ArticleCard/ArticleCard";
+import myJson from './mockData.json';//MOCKDATA
+
+
 function Search() {
-  const [data, setData] = useState([]);
-  const [oriData, setOriData] = useState([]);
-  const [totalResults, setTotalResults] = useState(0);
-  const [area, setArea] = useState("美国");
-  const [selectedTags, setSelectedTags] = useState();
-  //TODO 主页传参
-  const location = useLocation();
-  const param = location.state.word;
-  const searcChanged = () => {
-    const word = document.getElementById("search").value;
-    console.log(word);
-    setTimeout(() => getArticle(word), 1000);
-  };
+
   const navigate = useNavigate();
+  const [data, setData] = useState([]);//布局使用的文章数据
+  const [origData, setOrigData] = useState([]);//未排序的数据
+  const [totalResults, setTotalResults] = useState(0);//匹配文章数
+  const [col1, setCol1] = useState([]);//布局第一列
+  const [col2, setCol2] = useState([]);//布局第二列
+
+  //接收search传参
+  const [search, setSearch] = useSearchParams();
+  let param;
+  if (search.get('word')) {
+    param = search.get('word');
+  } else {
+    param = '';
+  }
+
+  // 初始时，通过search传参加载页面
   const getArticle = (word) => {
+
+    console.log('search params: ', word);
+    // const sortedJson = sortByViews(myJson);
+    // setOrigData(sortedJson);
+    // setData(sortedJson);
+
     axios({
       method: "GET",
-      url: "api/api/search_article",
+      url: "api/api/search",
       params: {
         word: word,
       },
     }).then((res) => {
-      console.log(res, "res");
+      console.log("res", res);
       if (res.data) {
-        if (res.data === "nodata") {
+        const resData = res.data.data;
+        console.log("data: ",resData);
+
+        if (resData.length == 0) {
           setData([
             {
               article_id: "0",
-              title: "暂时没有相关搜索内容",
-              summary: "联系我们",
-              tags: [],
-              update_time: Date.now(),
+              title: `暂时没有相关内容 :(`,
+              summary: "欢迎联系我们，提供反馈",
+              tags: '暂无',
+              update_time: '',
               country: "国家",
               views: "0",
-            },
+            }
           ]);
         } else {
-          setData(res.data);
-          setOriData(res.data);
+
+          const sortedJson = sortByViews(resData);
+          setOrigData(sortedJson);
+          setData(sortedJson);
         }
+      } else {
+        setData([
+          {
+            article_id: "0",
+            title: "暂时没有相关搜索内容",
+            summary: "联系我们",
+            tags: [],
+            update_time: Date.now(),
+            country: "国家",
+            views: "0",
+          }
+        ]);
       }
     });
-  };
-  const tags = [
-    "买车",
-    "签证",
-    "毕业",
-    "选校",
-    "吃饭",
-    "租房",
-    "申请",
-    "考试",
-    "生活",
-    "机票",
-    "报警",
-    "做饭",
-  ];
-  const mostViews = () => {
-    //todo
-    const newData = data.sort((a, b) => (a.views < b.views ? 1 : -1));
-    setData(newData);
-    console.log("以浏览量排列");
-  };
-  const newest = () => {
-    //todo
-    const newData = data.sort((a, b) =>
-      a.update_time < b.update_time ? 1 : -1
-    );
-    setData(newData);
-    console.log("以发布时间排列", data);
-  };
-  const sortByTag = (tag) => {
-    //todo 改成多选
-    setSelectedTags(tag);
-    if (tag === selectedTags) {
-      setSelectedTags();
-      setData(oriData);
-      console.log(oriData, "??");
-    } else {
-      const newData = data.filter((item) => item.tags.includes(tag));
-      console.log(newData);
-      setData(newData);
-    }
 
-    console.log("只显示标签", tag, selectedTags);
-  };
-  const toArticle = (e) => {
-    navigate("/article", { state: { article_id: e } });
-    console.log("跳转到文章页", e);
   };
 
+  //根据浏览量排序一个数组
+  const sortByViews = (arr) => {
+    const newArr = arr.slice().sort((a, b) => (a.views * 1 < b.views * 1 ? 1 : -1));
+    return newArr;
+
+  }
+
+  //加载组件时搜索url带来的关键字
+  useEffect(() => {
+    getArticle(param);
+    //sortByViews();
+  }, []);
+
+  //data更新时刷新总匹配数
   useEffect(() => {
     setTotalResults(data.length);
   }, [data]);
+
+  //data更新时更新col1，col2排版
   useEffect(() => {
-    getArticle(param)
-  }, []);
+    const arr = splitArray(data);
+    setCol1(arr[0]);
+    setCol2(arr[1]);
+  }, [data]);
+
+  // 奇偶分离array，用作卡片排版
+  const splitArray = (arr) => {
+    const oddOnes = [],
+      evenOnes = [];
+    for (let i = 0; i < arr.length; i++)
+      (i % 2 === 0 ? evenOnes : oddOnes).push(arr[i]);
+    return [evenOnes, oddOnes];
+  }
+
+
+
+
+
   return (
     <div className="mainContent">
-      <div className={styles.page}>
-        <div className={styles.topHolder}></div>
-        <div className={styles.main}>
-          <div className={styles.searchPanel}>
-            <div className={styles.header}>
-              <div className={styles.resulTitle}>搜索结果</div>
-              <div className={styles.country}>{area}</div>
+
+      <div className={styles.main}>
+
+        {/* 左侧功能栏 */}
+        <SearchPanel data={data} setData={setData} origData={origData} getArticle={getArticle} setOrigData={setOrigData}/>
+
+        {/* 右侧文章卡片区域 */}
+        <div className={styles.displayPanel}>
+          <div className={styles.totalResults}>共{totalResults}篇精选文章</div>
+          <div className={styles.cardContainer}>
+
+            {/* 使用props传参给文章卡片组件，col1col2排版 */}
+            <div key={col1} className={styles.col1}>
+              {col1.map((item) => {
+                return <ArticleCard key={item.article_id} item={item} />;
+              })}
             </div>
-            <div>
-              <input
-                className={styles.inputWindow}
-                id="search"
-                placeholder="有点好用的留学导航"
-                onChange={() => searcChanged()}
-              ></input>
-            </div>
-            <div>
-              <div className={styles.sortTitle}>排列方式</div>
-              <div className={styles.sortMethod}>
-                <button onClick={() => mostViews()}>浏览最多</button>
-                <button onClick={() => newest()}>最新</button>
-              </div>
-            </div>
-            <div className={styles.sortByTags}>
-              标签
-              <div className={styles.tagCard}>
-                {tags.map((item) => (
-                  <button
-                    className={selectedTags === item ? styles.active : ""}
-                    onClick={() => sortByTag(item)}
-                  >
-                    {item}
-                  </button>
-                ))}
-              </div>
-            </div>
-            <div className={styles.ad}>超级广告</div>
-          </div>
-          <div className={styles.displayPanel}>
-            <div className={styles.totalResults}>共{totalResults}条</div>
-            <div className={styles.cardContainer}>
-              {data.map((item) => (
-                <div
-                  className={styles.card}
-                  onClick={() => toArticle(item.article_id)}
-                >
-                  <div className={styles.cardContent}>
-                    <div className={styles.cardTop}>
-                      <div className={styles.user}>{item.user}</div>
-                      <div className={styles.postTime}>{item.update_time}</div>
-                    </div>
-                    <div className={styles.title}>{item.title}</div>
-                    <div className={styles.tagContainer}>
-                      {item.tags.map((tag) => (
-                        <div className={styles.tag}>{"#" + tag}</div>
-                      ))}
-                      <div className={styles.views}>
-                        <RemoveRedEyeIcon fontSize="10px" />
-                        {" " + item.views}
-                      </div>
-                    </div>
-                    <div className={styles.summary}>{item.summary}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
+
+            <div className={styles.col2}>
+              {col2.map((item) => {
+              return <ArticleCard key={item.article_id} item={item} />;
+            }
+
+            )}</div>
+
           </div>
         </div>
       </div>
     </div>
+
   );
 }
+
+
+
 
 export default Search;

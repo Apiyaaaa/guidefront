@@ -1,15 +1,13 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useSearchParams, useNavigate } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import styles from "./Search.module.css";
-import SearchPanel from '../components/SearchPanel/SearchPanel';
-import ArticleCard from "../components/ArticleCard/ArticleCard";
-import myJson from './mockData.json';//MOCKDATA
+import SearchPanel from '../../components/SearchPanel/SearchPanel';
+import ArticleCard from "../../components/ArticleCard/ArticleCard";
 
 
 function Search() {
 
-  const navigate = useNavigate();
   const [data, setData] = useState([]);//布局使用的文章数据
   const [origData, setOrigData] = useState([]);//未排序的数据
   const [totalResults, setTotalResults] = useState(0);//匹配文章数
@@ -29,9 +27,7 @@ function Search() {
   const getArticle = (word) => {
 
     console.log('search params: ', word);
-    // const sortedJson = sortByViews(myJson);
-    // setOrigData(sortedJson);
-    // setData(sortedJson);
+
 
     axios({
       method: "GET",
@@ -45,7 +41,7 @@ function Search() {
         const resData = res.data.data;
         console.log("data: ",resData);
 
-        if (resData.length == 0) {
+        if (resData.length === 0) {
           setData([
             {
               article_id: "0",
@@ -90,8 +86,7 @@ function Search() {
   //加载组件时搜索url带来的关键字
   useEffect(() => {
     getArticle(param);
-    //sortByViews();
-  }, []);
+  },[]);
 
   //data更新时刷新总匹配数
   useEffect(() => {

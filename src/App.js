@@ -1,10 +1,10 @@
 import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 
 import "./App.css";
-import Home from "./Home/Home";
-import Search from './Search/Search'
-import Article from "./Article/Article";
+import Home from "./pages/Home/Home";
+import Search from './pages/Search/Search'
+import Article from "./pages/Article/Article";
 
 
 function App() {

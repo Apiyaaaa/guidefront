@@ -1,34 +1,22 @@
-import  { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { nanoid } from 'nanoid';
 import styles from './SearchPanel.module.css'
-import myJson from '../../Search/mockData.json';//MOCKDATA
+import axios from 'axios';
 
 
 
 export default function SearchPanel(props) {
-    const {data,setData,origData,setOrigData,getArticle} = props; //布局使用的文章数据，未排序的数据
+    const { data, setData, origData, getArticle } = props; //布局使用的文章数据，未排序的数据
     const navigate = useNavigate();
-    
+
     const [area, setArea] = useState("美国");//未来需要接收area参数
     const [selectedTags, setSelectedTags] = useState([]);//被选择的标签们
     const [mostViewsClicked, setMostviewsClicked] = useState(true); //浏览最多排序状态
     const [newestClicked, setNewestClicked] = useState(false); //最新排序状态
+    const [tags, setTags] = useState([]); //最新排序状态
 
-    const tags = [
-        "毕业",
-        "签证",
-        "研究生",
-        "选校",
-        "吃饭",
-        "租啊房",
-        "申请",
-        "考试",
-        "生啊活",
-        "机票",
-        "报警",
-        "做嗷嗷饭"
-    ];
+
 
 
     //搜索框
@@ -37,7 +25,7 @@ export default function SearchPanel(props) {
     const searchChanged = () => {
         const word = document.getElementById("search").value;
         //更改search参数，同步搜索框url
-        setTimeout(() => {setSearch(`word=${word}`);getArticle(word)}, 1000);
+        setTimeout(() => { setSearch(`word=${word}`); getArticle(word) }, 1000);
     };
 
 
@@ -112,14 +100,15 @@ export default function SearchPanel(props) {
         else {
             //根据标签筛选展示data中的文章
             let result = origData.filter((article) => {
-                const tagArr = article.tags.split('，');
+                const tagArr = article.tags.split('/');
+                let matchCount = 0;
 
                 for (let i = 0; i < tagArr.length; i++) {
                     if (inSelectedTags(tagArr[i])) {
-                        return true;
+                        matchCount+=1;
                     }
                 }
-                return false;
+                return matchCount === selectedTags.length;
             });
 
             //更新时，保证排列方式不变
@@ -133,20 +122,34 @@ export default function SearchPanel(props) {
 
     }
 
-useEffect(() => {
-    filterDataByTags();
-}, [selectedTags])
+    //筛选更新时，重新筛选
+    useEffect(() => {
+        filterDataByTags();
+    }, [selectedTags])
 
+    useEffect(() => {
+        //获取标签
+        axios.get('api/api/get_tags').then(
+            (res) => {
+                //console.log('TAGS',res)
+                if (res.data) {
+                    let tags = res.data.data;
+                    tags = tags.sort((a,b)=>a.tag_name.length - b.tag_name.length)
+                    setTags(tags);
+                }
+            }
+        )
 
+    }, [])
 
 
     return (
         <div className={styles.searchPanel}>
-        {/* 左侧功能栏 */}
+            {/* 左侧功能栏 */}
 
             <div className={styles.backIcon} onClick={() => navigate(-1)}></div>
             <div className={styles.header}>
-                <div className={styles.resulTitle} onClick={() => navigate(-1)}>留导航</div>
+                <div className={styles.resulTitle} onClick={() => navigate("/")}>留导航</div>
                 <div className={styles.country}>{area}</div>
             </div>
 
@@ -178,11 +181,11 @@ useEffect(() => {
                 <div className={styles.leftTitle}>标签</div>
                 <div className={styles.tags}>
                     {tags.map((item) => (
-                        <button key = {nanoid()}
-                            className={`${selectedTags.includes(item) ? styles.active : ""} ${styles.tag}`}
-                            onClick={() => sortByTag(item)}
+                        <button key={nanoid()}
+                            className={`${selectedTags.includes(item.tag_name) ? styles.active : ""} ${styles.tag}`}
+                            onClick={() => sortByTag(item.tag_name)}
                         >
-                            {item}
+                            {item.tag_name}
                         </button>
                     ))}
                 </div>

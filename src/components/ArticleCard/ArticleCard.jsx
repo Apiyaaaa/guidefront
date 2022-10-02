@@ -31,7 +31,7 @@ export default function ArticleCard(props) {
                 <div className={styles.title}>{item.title}</div>
 
                 <div className={styles.tagContainer}>
-                    {item.tags.split('，').map((tag) => (
+                    {item.tags.split('/').map((tag) => (
                         <div className={styles.tagCard} key = {nanoid()}>{"#" + tag}</div>
                     ))}
                     <div className={styles.views}>

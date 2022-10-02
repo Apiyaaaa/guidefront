@@ -1,22 +1,20 @@
-import React, { useRef, useState, useEffect } from 'react'
+import React, { useRef } from 'react'
 import { useNavigate } from "react-router-dom";
 import styles from "./Home.module.css";
 import SearchIcon from "@mui/icons-material/Search";
-import { CSSTransition } from 'react-transition-group';
 
 //引入四角图片
-import topLeft from "../images/topleft.svg";
-import topRight from "../images/topright.svg";
-import bottomLeft from "../images/bottomLeft.svg";
-import bottomRight from "../images/bottomRight.svg";
+import topLeft from "../../images/topleft.svg";
+import topRight from "../../images/topright.svg";
+import bottomLeft from "../../images/bottomLeft.svg";
+import bottomRight from "../../images/bottomRight.svg";
 
 
 
-// 留导航首页组件
+// 留导航首页
 export default function Home() {
 
   //搜索放大效果
-  const [zoom, setZoom] = useState(true);
 
   //使用navigate进行页面跳转
   const navigate = useNavigate();
@@ -52,17 +50,9 @@ export default function Home() {
   // TODO 四角Tag - 跳转对应tag文章
   const tagClick = (e) => {
     const classNAME = e.currentTarget.getAttribute("data-info");
-    // const underscore_pos = classNAME.indexOf('_');
-    // const classN = classNAME.slice(underscore_pos+1);
     console.log(classNAME);//已成功
-    // navigate("/get_article", { state: { article_id: classNAME } })
 
   }
-
-  const transitionStyles = {
-    exiting: { opacity: 0 },
-    exited: { opacity: 0 }
-  };
 
 
   //组件Render值

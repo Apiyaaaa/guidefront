@@ -1,0 +1,15 @@
+.recommendCard {
+  font-size: 18px;
+  font-weight: bold;
+}
+.recommendItems {
+}
+.recommendItem {
+  font-size: 14px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+button {
+  
+}

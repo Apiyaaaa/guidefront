@@ -1,0 +1,15 @@
+import { ListItemSecondaryAction } from '@mui/material';
+import { useEffect, useState } from 'react'
+export default function RecommendCard(props) {
+    const toArticle = (article_id) => {
+        navigate(`/article/${article_id}`);
+        const navigate = useNavigate();
+        console.log("跳转到文章页-id: ", article_id);
+    };
+    const items = []
+    return (
+        <div>
+            <div>{items.map((item) => (<div onClick={() => toArticle(item.article_id)}>item.title</div>))}</div>
+        </div>
+    )
+}

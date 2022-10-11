@@ -1,0 +1,10 @@
+.recommendCard {
+  font-size: 18px;
+  font-weight: bold;
+}
+.recommendItems {
+    overflow: hidden;
+}
+.recommendItem {
+  font-size: 14px;
+}
